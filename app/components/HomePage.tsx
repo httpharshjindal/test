@@ -60,7 +60,7 @@ const HomePage = () => {
         setMessage(data);
         if (data.event == "create" || data.gameId) {
           gameId = data.gameId;
-          hostId = data.hostId;
+          hostId = clientId
           localStorage.setItem("gameId", data.gameId);
           router.replace("/game");
         }

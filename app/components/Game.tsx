@@ -6,6 +6,8 @@ import Players from "./Players";
 import Canvas from "./Canvas";
 import Chat from "./Chat";
 import { clientId, gameId, hostId } from "./HomePage";
+import UnderlinedWord from "./UnderlinedWord";
+import Timer from "./Timer";
 interface GameClient {
   nickName: string;
   clientId: string;
@@ -19,22 +21,20 @@ export default function Game() {
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [user, setUser] = useState<GameClient>();
   const [selectedPlayer, setSelectedPlayer] = useState<GameClient>();
-  const [slectedWord, setSelectedWord] = useState("");
+  const [selectedWord, setSelectedWord] = useState("");
   const [popUp, setPopUp] = useState(true);
   const [isGameOver, setisGameOver] = useState(false);
   const [allowCursor, setAllowCursor] = useState(true);
   const [turnCount, setTurnCount] = useState(1);
   const [receivedDrawingData, setReceivedDrawingData] = useState([]);
   const router = useRouter();
-  const [wordLenght, setWordLength] = useState(0);
-
+  const [wordLength, setWordLength] = useState(0);
   useEffect(() => {
     if (!gameId) {
       router.push("/");
-      JSON.stringify(wordLenght);
-      JSON.stringify(turnCount);
     }
   }, [router]);
+  console.log(hostId, clientId);
 
   useEffect(() => {
     const ws = createWebSocket();
@@ -108,10 +108,19 @@ export default function Game() {
     <div className="w-full h-screen px-5 py-5 flex justify-start items-center flex-col gap-2 relative bg-black overflow-y-hidden">
       <div className="flex w-full h-full gap-2 z-10 ">
         <Players selectedPlayer={selectedPlayer} clients={clients} />
-        <Canvas
-          selectedPlayer={selectedPlayer?.clientId}
-          receivedDrawingData={receivedDrawingData}
-        />
+        <div className="relative flex justify-center items-center"> 
+          <Canvas
+            selectedPlayer={selectedPlayer?.clientId}
+            receivedDrawingData={receivedDrawingData}
+          />
+          <div className="absolute top-2 flex justify-center items-center z-50 select-none ">
+            <UnderlinedWord length={wordLength} selectedWord={selectedWord} />
+          </div>
+          <div className="absolute -top-7 right-7 flex justify-center items-center  z-50 select-none">
+            <Timer turnCount={turnCount} gameStarted={gameStarted} />
+          </div>
+        </div>
+
         <Chat
           message={message}
           user={user}
@@ -178,7 +187,7 @@ export default function Game() {
             </h1>
             {selectedPlayer.clientId == clientId && (
               <h1 className="bg-green-400 rounded-lg w-72 h-10 text-white text-lg font-semibold flex justify-center items-center">
-                {slectedWord}
+                {selectedWord}
               </h1>
             )}
           </div>
