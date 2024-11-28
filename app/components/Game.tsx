@@ -5,7 +5,7 @@ import createWebSocket from "../lib/ws";
 import Players from "./Players";
 import Canvas from "./Canvas";
 import Chat from "./Chat";
-import { clientId, gameId } from "./HomePage";
+import { clientId, gameId, hostId } from "./HomePage";
 interface GameClient {
   nickName: string;
   clientId: string;
@@ -18,7 +18,6 @@ export default function Game() {
   const [message, setMessage] = useState([]);
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [user, setUser] = useState<GameClient>();
-  const [hostId, setHostId] = useState("");
   const [selectedPlayer, setSelectedPlayer] = useState<GameClient>();
   const [slectedWord, setSelectedWord] = useState("");
   const [popUp, setPopUp] = useState(true);
@@ -51,9 +50,6 @@ export default function Game() {
           setReceivedDrawingData(data.game.state.drawing);
           if (data.game.isGameStarted) {
             setGameStarted(true);
-          }
-          if (data.game.hostId) {
-            setHostId(data.game.hostId);
           }
           if (data.game.selectedPlayer) {
             setSelectedPlayer(data.game.clients[data.game.selectedPlayer]);

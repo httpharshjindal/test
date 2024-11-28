@@ -150,7 +150,7 @@ const Canvas = ({
   };
 
   return (
-    <div className="flex flex-col justify-center items-center gap-4 w-3/5 h-full bg-white overflow-hidden relative">
+    <div className="flex flex-col justify-center items-center gap-4 full h-full bg-white overflow-hidden relative">
       <canvas
         ref={canvasRef}
         style={{

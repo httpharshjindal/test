@@ -6,6 +6,7 @@ import React from "react";
 import UserProfile from "./ui/UserProfile";
 export let clientId = "";
 export let gameId = "";
+export let hostId = "";
 const HomePage = () => {
   const [nickName, setNickName] = useState("");
   const [gameIdInput, setGameIdInput] = useState("");
@@ -59,15 +60,12 @@ const HomePage = () => {
         setMessage(data);
         if (data.event == "create" || data.gameId) {
           gameId = data.gameId;
+          hostId = data.hostId;
           localStorage.setItem("gameId", data.gameId);
-          setTimeout(() => {
-            router.replace("/game");
-          }, 5000);
+          router.replace("/game");
         }
         if (data.event == "join") {
-          setTimeout(() => {
-            router.replace("/game");
-          }, 5000);
+          router.replace("/game");
         }
       };
       setTimeout(() => {
