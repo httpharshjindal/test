@@ -13,7 +13,7 @@ const Timer = ({
 
   useEffect(() => {
     if (gameStarted) {
-      setTimer(60);
+      setTimer(120);
 
       const timerInterval = setInterval(() => {
         setTimer((prev) => {
