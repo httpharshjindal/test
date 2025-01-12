@@ -53,12 +53,15 @@ const HomePage = () => {
         gameId = gameIdInput;
         localStorage.setItem("gameId", gameIdInput);
         setColor("red");
+        
       }
-
+      setPopUp(true);
+      setPopUpMessage("Server is starting/ creating game");
       socket.onmessage = (event: any) => {
         const data = JSON.parse(event.data);
         setMessage(data);
         if (data.event == "create" || data.gameId) {
+          setPopUp(false)
           gameId = data.gameId;
           hostId = clientId
           localStorage.setItem("gameId", data.gameId);
@@ -76,15 +79,10 @@ const HomePage = () => {
       }, 5000);
     } else {
       console.warn("WebSocket not initialized yet");
+      setPopUpMessage("Server is starting please wait");
     }
   };
 
-  if (popUp) {
-    setTimeout(() => {
-      setPopUp(false);
-      setPopUpMessage("");
-    }, 5000);
-  }
   return (
     <div className="w-full h-screen flex justify-center items-center bg-blue-950">
       <div className="w-80 bg-[#3760d121] rounded-md p-5 flex flex-col gap-2 absolute z-50">
@@ -171,8 +169,6 @@ const HomePage = () => {
         <button
           className="bg-[#1671C5] text-white px-2 py-3 rounded-lg font-bold "
           onClick={() => {
-            setPopUp(true);
-            setPopUpMessage("please Wait");
             sendMessage({
               event: "create",
               clientId: clientId,
