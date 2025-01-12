@@ -18,6 +18,7 @@ const HomePage = () => {
   const router = useRouter();
 
   useEffect(() => {
+    
     const ws = createWebSocket(); // Provide your WebSocket server URL
     setSocket(ws);
     ws.onmessage = (event: any) => {
@@ -25,6 +26,9 @@ const HomePage = () => {
       if (data.clientId) {
         clientId = data.clientId;
         localStorage.setItem("clientId", data.clientId);
+      }else{
+        setPopUp(true);
+        setPopUpMessage("Server is starting please wait");
       }
     };
   }, []);
@@ -46,17 +50,17 @@ const HomePage = () => {
         return;
       }
       if (payload.event == "create") {
+        setPopUpMessage("creating game");
         socket.send(JSON.stringify(payload));
       }
       if (payload.event == "join") {
+        setPopUpMessage("joining game");
         socket.send(JSON.stringify(payload));
         gameId = gameIdInput;
         localStorage.setItem("gameId", gameIdInput);
         setColor("red");
         
       }
-      setPopUp(true);
-      setPopUpMessage("Server is starting/ creating game");
       socket.onmessage = (event: any) => {
         const data = JSON.parse(event.data);
         setMessage(data);
@@ -68,6 +72,7 @@ const HomePage = () => {
           router.replace("/game");
         }
         if (data.event == "join") {
+          setPopUp(false)
           router.replace("/game");
         }
       };
