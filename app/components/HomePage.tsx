@@ -24,7 +24,7 @@ const HomePage = () => {
   
     if (storedClientId) {
       setScreenLoader(false);
-
+      localStorage.removeItem("clientId");
     }
   
     // Otherwise, create the WebSocket connection.
