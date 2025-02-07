@@ -20,12 +20,12 @@ const HomePage = () => {
   const [screenLoader, setScreenLoader] = useState(true);
 
   useEffect(() => {
-    // const storedClientId = localStorage.getItem("clientId");
+    const storedClientId = localStorage.getItem("clientId");
   
-    // if (storedClientId) {
-    //   setScreenLoader(false);
+    if (storedClientId) {
+      setScreenLoader(false);
 
-    // }
+    }
   
     // Otherwise, create the WebSocket connection.
     const ws = createWebSocket();
